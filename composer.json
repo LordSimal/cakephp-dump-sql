@@ -1,0 +1,34 @@
+{
+    "name": "lordsimal/cakephp-dump-sql",
+    "description": "A CakePHP 4 plugin to export SQL",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "cakephp/cakephp": "^4.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "cakephp/cakephp-codesniffer": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CakeDumpSql\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CakeDumpSql\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
+
