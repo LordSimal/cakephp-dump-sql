@@ -20,7 +20,7 @@ class MySQL extends SqlBase
             $this->command,
             '--user="' . ($config['username'] ?? '') . '"',
             '--password="' . ($config['password'] ?? '') . '"',
-            '--default-character-set=' . ($config['encoding'] ?? 'utf8'),
+            '--default-character-set=' . ($config['encoding'] ?? 'utf8mb4'),
             '--host=' . ($config['host'] ?? 'localhost'),
             '--databases',
             $config['database'],
