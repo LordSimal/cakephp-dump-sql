@@ -60,13 +60,12 @@ class DumpSqlCommand extends Command
         }
 
         $result = '';
-        $config = $connection->config();
         $driver = $connection->getDriver();
         switch (get_class($driver)) {
             case Mysql::class:
-                $object = new \CakeDumpSql\Sql\MySQL();
+                $object = new \CakeDumpSql\Sql\MySQL($connection->config());
                 $object->setDataOnly($dataOnly);
-                $result = $object->dump($config['host'], $config['username'], $config['password'], $config['database']);
+                $result = $object->dump();
                 break;
         }
 

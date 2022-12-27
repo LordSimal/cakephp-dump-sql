@@ -11,9 +11,30 @@ abstract class SqlBase
     protected string $command;
 
     /**
+     * @var array The config array from the connection object
+     */
+    protected array $config;
+
+    /**
      * @var bool Indicated if only data should be exported or not
      */
-    protected bool $dataOnly;
+    protected bool $dataOnly = false;
+
+    /**
+     * @param array $config The config array from the connection object
+     */
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
 
     /**
      * @return bool

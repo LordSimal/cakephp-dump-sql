@@ -10,20 +10,26 @@ class MySQL extends SqlBase
     protected string $command = 'mysqldump';
 
     /**
-     * @param string $host The database host address
-     * @param string $user The username which has access to the specified database
-     * @param string $password The password for the specified user
-     * @param string $db The name of the database
      * @return string
      */
-    public function dump(string $host, string $user, string $password, string $db): string
+    public function dump(): string
     {
-        $command = sprintf('%s -h %s -u %s -p%s %s', $this->command, $host, $user, $password, $db);
+        $config = $this->getConfig();
+
+        $command = [
+            $this->command,
+            '--user="' . ($config['username'] ?? '') . '"',
+            '--password="' . ($config['password'] ?? '') . '"',
+            '--default-character-set=' . ($config['encoding'] ?? 'utf8'),
+            '--host=' . ($config['host'] ?? 'localhost'),
+            '--databases ' . $config['database'],
+            '--no-create-db',
+        ];
         if ($this->isDataOnly()) {
-            $command .= ' --no-create-info';
+            $command[] = ' --no-create-info';
         }
 
-        $process = new Process(explode(' ', $command));
+        $process = new Process($command);
         $process->run();
 
         if ($process->isSuccessful()) {

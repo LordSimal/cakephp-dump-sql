@@ -14,4 +14,8 @@
       <directory name="vendor" />
     </ignoreFiles>
   </projectFiles>
+
+  <issueHandlers>
+    <PropertyNotSetInConstructor errorLevel="suppress"/>
+  </issueHandlers>
 </psalm>
