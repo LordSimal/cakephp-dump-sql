@@ -16,7 +16,6 @@ use Cake\Datasource\Exception\MissingDatasourceConfigException;
  */
 class DumpSqlCommand extends Command
 {
-
     /**
      * Hook method for defining this command's option parser.
      *
@@ -56,27 +55,29 @@ class DumpSqlCommand extends Command
             $connection = ConnectionManager::get($datasource);
         } catch (MissingDatasourceConfigException $e) {
             $io->err($e->getMessage());
+
             return self::CODE_ERROR;
         }
 
-        $result = "";
+        $result = '';
         $config = $connection->config();
         $driver = $connection->getDriver();
-        switch(get_class($driver)) {
-          case Mysql::class:
-            $object = new \CakeDumpSql\Sql\MySQL();
-            $object->setDataOnly($dataOnly);
-            $result = $object->dump($config['host'], $config['username'], $config['password'], $config['database']);
-            break;
+        switch (get_class($driver)) {
+            case Mysql::class:
+                $object = new \CakeDumpSql\Sql\MySQL();
+                $object->setDataOnly($dataOnly);
+                $result = $object->dump($config['host'], $config['username'], $config['password'], $config['database']);
+                break;
         }
 
         if ($gzip) {
-          if (function_exists('gzencode')) {
-            $result = gzencode($result, 9);
-          } else {
-            $io->err('Your PHP installation does not have zlib support to create a gzip file!');
-            return self::CODE_ERROR;
-          }
+            if (function_exists('gzencode')) {
+                $result = gzencode($result, 9);
+            } else {
+                $io->err('Your PHP installation does not have zlib support to create a gzip file!');
+
+                return self::CODE_ERROR;
+            }
         }
 
         $io->out($result);

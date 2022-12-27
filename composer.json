@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.4",
-        "cakephp/cakephp": "^4.4"
+        "cakephp/cakephp": "^4.4",
+        "symfony/process": "^6.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -23,7 +24,16 @@
     },
     "scripts": {
         "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests"
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "phpstan": "phpstan.phar analyse",
+        "psalm": "psalm.phar --show-info=false",
+        "stan": [
+            "@phpstan",
+            "@psalm"
+        ],
+        "stan-baseline": "phpstan.phar --generate-baseline",
+        "psalm-baseline": "psalm.phar --set-baseline=psalm-baseline.xml",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev symfony/polyfill-php81 phpstan/phpstan:^1.9 psalm/phar:^5.1 && mv composer.backup composer.json"
     },
     "config": {
         "allow-plugins": {
@@ -31,4 +41,3 @@
         }
     }
 }
-

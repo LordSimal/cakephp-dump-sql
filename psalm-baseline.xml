@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="dev-master@">
+  <file src="src/CakeDumpSqlPlugin.php">
+    <PropertyNotSetInConstructor occurrences="5">
+      <code>CakeDumpSqlPlugin</code>
+      <code>CakeDumpSqlPlugin</code>
+      <code>CakeDumpSqlPlugin</code>
+      <code>CakeDumpSqlPlugin</code>
+      <code>CakeDumpSqlPlugin</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Sql/SqlBase.php">
+    <MissingConstructor occurrences="1">
+      <code>$dataOnly</code>
+    </MissingConstructor>
+  </file>
+</files>

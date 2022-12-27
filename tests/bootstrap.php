@@ -10,13 +10,13 @@ use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 
 if (is_file('vendor/autoload.php')) {
-  require_once 'vendor/autoload.php';
+    require_once 'vendor/autoload.php';
 } else {
-  require_once dirname(__DIR__) . '/vendor/autoload.php';
+    require_once dirname(__DIR__) . '/vendor/autoload.php';
 }
 
 if (!defined('DS')) {
-  define('DS', DIRECTORY_SEPARATOR);
+    define('DS', DIRECTORY_SEPARATOR);
 }
 define('ROOT', dirname(__DIR__));
 define('APP_DIR', 'TestApp');
@@ -86,7 +86,7 @@ Cache::setConfig([
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
-  putenv('db_dsn=sqlite:///:memory:');
+    putenv('db_dsn=sqlite:///:memory:');
 }
 
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
