@@ -22,11 +22,12 @@ class MySQL extends SqlBase
             '--password="' . ($config['password'] ?? '') . '"',
             '--default-character-set=' . ($config['encoding'] ?? 'utf8'),
             '--host=' . ($config['host'] ?? 'localhost'),
-            '--databases ' . $config['database'],
+            '--databases',
+            $config['database'],
             '--no-create-db',
         ];
         if ($this->isDataOnly()) {
-            $command[] = ' --no-create-info';
+            $command[] = '--no-create-info';
         }
 
         $process = new Process($command);
