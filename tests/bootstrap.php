@@ -80,7 +80,7 @@ Cache::setConfig([
 
 // Ensure default test connection is defined
 if (!getenv('db_dsn')) {
-    putenv('db_dsn=sqlite:///testdb.sqlite3');
+    putenv('db_dsn=sqlite:///tmp/testdb.sqlite3');
 }
 
 ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
