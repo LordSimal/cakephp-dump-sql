@@ -3,7 +3,10 @@
 
 This plugin adds a CakePHP command to easily generate SQL dumps of your configured datasources
 
-Currently only MySQL/MariaDB exports are supported but PostgreSQL and SQLite shouldn't be that hard to integrate along the way.
+Currently the following DBMS are integrated:
+- MySQL/MariaDB
+- SQLite
+- PostgreSQL
 
 ## Installation
 
@@ -25,19 +28,29 @@ bin/cake plugin load CakeDumpSql
 public function bootstrap(): void
 {
     parent::bootstrap();
-    
+
     // Other plugins
     $this->addPlugin('CakeDumpSql');
 }
 ```
 
 
+## Requirements
+
+For each DBMS you need to have its respective dump tool installed.
+
+- MySQL/MariaDB => `mysqldump`
+- SQLite => `sqlite3`
+- PostgreSQL => `pg_dump`
+
+⚠️ For `pg_dump` it is especially important that you have a compatible version installed. So e.g. if you have a **PostgreSQL 14 server** you need a **pg_dump version 14** ⚠️
+
 ## How to use
 
 After installing the plugin you now have a new command available to you:
 
 ```
-bin/cake dump_sql 
+bin/cake dump_sql
 ```
 
 After executing that command you should see a SQL representation of your `default` datasource inside your console.
