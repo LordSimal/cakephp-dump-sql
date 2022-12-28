@@ -61,14 +61,6 @@ abstract class SqlBase
     }
 
     /**
-     * @return \Cake\Console\ConsoleIo
-     */
-    public function getIo(): ConsoleIo
-    {
-        return $this->io;
-    }
-
-    /**
      * @param \Cake\Console\ConsoleIo $io The IO instance from the command
      * @return void
      */

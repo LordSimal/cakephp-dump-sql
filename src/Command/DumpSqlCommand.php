@@ -12,6 +12,7 @@ use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\Exception\MissingDatasourceConfigException;
+use CakeDumpSql\Error\UnknownDriverException;
 
 /**
  * DumpSQL command.
@@ -46,6 +47,7 @@ class DumpSqlCommand extends Command
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
      * @return int The exit code
+     * @throws \CakeDumpSql\Error\UnknownDriverException
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
@@ -61,28 +63,25 @@ class DumpSqlCommand extends Command
             return self::CODE_ERROR;
         }
 
-        $result = '';
         $driver = $connection->getDriver();
         switch (get_class($driver)) {
             case Mysql::class:
                 $object = new \CakeDumpSql\Sql\MySQL($connection->config());
-                $object->setIo($io);
-                $object->setDataOnly($dataOnly);
-                $result = $object->dump();
                 break;
             case Sqlite::class:
                 $object = new \CakeDumpSql\Sql\Sqlite($connection->config());
-                $object->setIo($io);
-                $object->setDataOnly($dataOnly);
-                $result = $object->dump();
                 break;
             case Postgres::class:
                 $object = new \CakeDumpSql\Sql\PostgreSQL($connection->config());
-                $object->setIo($io);
-                $object->setDataOnly($dataOnly);
-                $result = $object->dump();
                 break;
+            default:
+                $message = sprintf('Unknown driver "%s" given.', get_class($driver));
+                throw new UnknownDriverException($message);
         }
+
+        $object->setIo($io);
+        $object->setDataOnly($dataOnly);
+        $result = $object->dump();
 
         if ($gzip) {
             if (function_exists('gzencode')) {

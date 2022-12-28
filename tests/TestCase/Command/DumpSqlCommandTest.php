@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace CakeDumpSql\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
+use CakeDumpSql\Error\UnknownDriverException;
+use TestApp\Driver\MyDriver;
 
 class DumpSqlCommandTest extends TestCase
 {
@@ -97,6 +100,30 @@ class DumpSqlCommandTest extends TestCase
             $this->assertStringContainsString('COPY public.posts (id, title, created, modified) FROM stdin;', $sql);
         }
         $this->assertExitCode(0);
+    }
+
+    public function testUnknownConnectionName(): void
+    {
+        $this->exec('dump_sql unknown');
+        $this->assertErrorContains('The datasource configuration "unknown" was not found.');
+        $this->assertExitCode(1);
+    }
+
+    public function testUnknownDriver(): void
+    {
+        $this->expectException(UnknownDriverException::class);
+        $this->expectExceptionMessage('Unknown driver "TestApp\Driver\MyDriver" given.');
+        ConnectionManager::setConfig('unknown', [
+            'className' => Connection::class,
+            'driver' => MyDriver::class,
+            'persistent' => false,
+            'timezone' => 'UTC',
+            'flags' => [],
+            'cacheMetadata' => false,
+            'log' => false,
+            'quoteIdentifiers' => false,
+        ]);
+        $this->exec('dump_sql unknown');
     }
 
     private function isDBType(string $type, string $connection = 'default'): bool
