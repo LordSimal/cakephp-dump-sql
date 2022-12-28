@@ -19,12 +19,6 @@ jobs:
             matrix:
                 php-version: [ '7.4', '8.0', '8.1' ]
                 db-type: [ sqlite, mysql, pgsql ]
-                dependencies: [ 'highest' ]
-                include:
-                    -   php-version: '7.4'
-                        dependencies: 'lowest'
-                    -   php-version: '8.1'
-                        dependencies: 'highest'
 
         services:
             postgres:
