@@ -83,7 +83,7 @@ jobs:
                     fi
 
             -   name: Code Coverage Report
-                if: success() && matrix.php-version == '8.1' && matrix.db-type == 'mysql'
+                if: success() && matrix.php-version == '8.1'
                 uses: codecov/codecov-action@v3
 
     cs-stan:
