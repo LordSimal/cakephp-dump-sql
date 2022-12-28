@@ -76,4 +76,18 @@ abstract class SqlBase
     {
         $this->io = $io;
     }
+
+    /**
+     * Check if a given binary is executable or not
+     *
+     * @param string $command The command to check
+     * @return bool
+     */
+    protected function checkBinary(string $command): bool
+    {
+        $windows = strpos(PHP_OS, 'WIN') === 0;
+        $test = $windows ? 'where' : 'command -v';
+
+        return is_executable(trim(shell_exec("$test $command")));
+    }
 }

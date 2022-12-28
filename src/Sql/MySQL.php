@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Sql;
 
+use CakeDumpSql\Error\BinaryNotFound;
 use Symfony\Component\Process\Process;
 
 class MySQL extends SqlBase
@@ -11,9 +12,14 @@ class MySQL extends SqlBase
 
     /**
      * @return string
+     * @throws \CakeDumpSql\Error\BinaryNotFound
      */
     public function dump(): string
     {
+        if (!$this->checkBinary($this->command)) {
+            throw new BinaryNotFound($this->command . ' was not found');
+        }
+
         $config = $this->getConfig();
 
         $command = [
