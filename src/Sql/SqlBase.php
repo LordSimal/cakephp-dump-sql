@@ -68,7 +68,7 @@ abstract class SqlBase
     }
 
     /**
-     * @param \Cake\Console\ConsoleIo $io
+     * @param \Cake\Console\ConsoleIo $io The IO instance from the command
      */
     public function setIo(ConsoleIo $io): void
     {
