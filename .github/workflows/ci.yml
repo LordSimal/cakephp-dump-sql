@@ -46,7 +46,7 @@ jobs:
             -   name: Setup Postgres
                 if: matrix.db-type == 'pgsql'
                 run: |
-                    psql -h 127.0.0.1 -u postgres -c 'GRANT ALL ON SCHEMA public to postgres;'
+                    psql -h 127.0.0.1 -U postgres -c 'GRANT ALL ON SCHEMA public to postgres;'
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
