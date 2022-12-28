@@ -49,6 +49,7 @@ jobs:
                     PGPASSWORD=postgres psql -h 127.0.0.1 -U postgres -c 'GRANT ALL ON SCHEMA public to postgres;'
 
             -   name: Install pg_dump
+                if: matrix.db-type == 'pgsql'
                 run: sudo apt-get install postgresql-client
 
             -   name: Setup PHP
