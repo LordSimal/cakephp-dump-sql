@@ -30,13 +30,16 @@ class MySQL extends SqlBase
             $command[] = '--no-create-info';
         }
 
-        $process = new Process($command);
+        $process = Process::fromShellCommandline(implode(' ', $command));
         $process->run();
 
-        if ($process->isSuccessful()) {
-            return $process->getOutput();
-        } else {
-            return $process->getErrorOutput();
+        $output = $process->getOutput();
+        $error = $process->getErrorOutput();
+
+        if (!empty($error)) {
+            $this->io->warning($error);
         }
+
+        return $output;
     }
 }

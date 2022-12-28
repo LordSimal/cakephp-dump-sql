@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace CakeDumpSql\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Database\Driver\Mysql;
+use Cake\Database\Driver\Sqlite;
+use Cake\Datasource\ConnectionManager;
 use Cake\I18n\FrozenTime;
 use Cake\TestSuite\TestCase;
 
@@ -29,8 +32,14 @@ class DumpSqlCommandTest extends TestCase
         $postsTable->save($entity);
 
         $this->exec('dump_sql');
-        $this->assertOutputContains('CREATE TABLE IF NOT EXISTS "posts"');
-        $this->assertOutputContains('INSERT INTO posts VALUES(');
+
+        if ($this->isDBType(Sqlite::class)) {
+            $this->assertOutputContains('CREATE TABLE IF NOT EXISTS "posts"');
+            $this->assertOutputContains('INSERT INTO posts VALUES(');
+        } elseif ($this->isDBType(Mysql::class)) {
+            $this->assertOutputContains('CREATE TABLE `posts` (');
+            $this->assertOutputContains('INSERT INTO `posts` VALUES (');
+        }
         $this->assertExitCode(0);
     }
 
@@ -46,8 +55,13 @@ class DumpSqlCommandTest extends TestCase
         $postsTable->save($entity);
 
         $this->exec('dump_sql --data-only');
-        $this->assertOutputNotContains('CREATE TABLE IF NOT EXISTS "posts"');
-        $this->assertOutputContains('INSERT INTO posts VALUES(');
+        if ($this->isDBType(Sqlite::class)) {
+            $this->assertOutputNotContains('CREATE TABLE IF NOT EXISTS "posts"');
+            $this->assertOutputContains('INSERT INTO posts VALUES(');
+        } elseif ($this->isDBType(Mysql::class)) {
+            $this->assertOutputNotContains('CREATE TABLE `posts` (');
+            $this->assertOutputContains('INSERT INTO `posts` VALUES (');
+        }
         $this->assertExitCode(0);
     }
 
@@ -65,8 +79,21 @@ class DumpSqlCommandTest extends TestCase
         $this->exec('dump_sql --gzip');
         $result = $this->_out->messages();
         $sql = gzdecode($result[0]);
-        $this->assertStringContainsString('CREATE TABLE IF NOT EXISTS "posts"', $sql);
-        $this->assertStringContainsString('INSERT INTO posts VALUES(', $sql);
+        if ($this->isDBType(Sqlite::class)) {
+            $this->assertStringContainsString('CREATE TABLE IF NOT EXISTS "posts"', $sql);
+            $this->assertStringContainsString('INSERT INTO posts VALUES(', $sql);
+        } elseif ($this->isDBType(Mysql::class)) {
+            $this->assertStringContainsString('CREATE TABLE `posts` (', $sql);
+            $this->assertStringContainsString('INSERT INTO `posts` VALUES (', $sql);
+        }
         $this->assertExitCode(0);
+    }
+
+    private function isDBType(string $type, string $connection = 'default'): bool
+    {
+        $connection = ConnectionManager::get($connection);
+        $driver = $connection->getDriver();
+
+        return get_class($driver) === $type;
     }
 }

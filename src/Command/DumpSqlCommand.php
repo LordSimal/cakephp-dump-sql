@@ -65,11 +65,13 @@ class DumpSqlCommand extends Command
         switch (get_class($driver)) {
             case Mysql::class:
                 $object = new \CakeDumpSql\Sql\MySQL($connection->config());
+                $object->setIo($io);
                 $object->setDataOnly($dataOnly);
                 $result = $object->dump();
                 break;
             case Sqlite::class:
                 $object = new \CakeDumpSql\Sql\Sqlite($connection->config());
+                $object->setIo($io);
                 $object->setDataOnly($dataOnly);
                 $result = $object->dump();
                 break;

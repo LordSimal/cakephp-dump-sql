@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Sql;
 
+use Cake\Console\ConsoleIo;
+
 abstract class SqlBase
 {
     /**
@@ -19,6 +21,11 @@ abstract class SqlBase
      * @var bool Indicated if only data should be exported or not
      */
     protected bool $dataOnly = false;
+
+    /**
+     * @var \Cake\Console\ConsoleIo The IO instance from the command
+     */
+    protected ConsoleIo $io;
 
     /**
      * @param array $config The config array from the connection object
@@ -50,5 +57,21 @@ abstract class SqlBase
     public function setDataOnly(bool $dataOnly): void
     {
         $this->dataOnly = $dataOnly;
+    }
+
+    /**
+     * @return \Cake\Console\ConsoleIo
+     */
+    public function getIo(): ConsoleIo
+    {
+        return $this->io;
+    }
+
+    /**
+     * @param \Cake\Console\ConsoleIo $io
+     */
+    public function setIo(ConsoleIo $io): void
+    {
+        $this->io = $io;
     }
 }
