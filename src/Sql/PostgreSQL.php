@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Sql;
 
-use CakeDumpSql\Error\BinaryNotFound;
+use CakeDumpSql\Error\BinaryNotFoundException;
+use CakeDumpSql\Error\VersionMismatchException;
 use Symfony\Component\Process\Process;
 
 class PostgreSQL extends SqlBase
@@ -12,12 +13,13 @@ class PostgreSQL extends SqlBase
 
     /**
      * @return string
-     * @throws \CakeDumpSql\Error\BinaryNotFound
+     * @throws \CakeDumpSql\Error\BinaryNotFoundException
+     * @throws \CakeDumpSql\Error\VersionMismatchException
      */
     public function dump(): string
     {
         if (!$this->checkBinary($this->command)) {
-            throw new BinaryNotFound($this->command . ' was not found');
+            throw new BinaryNotFoundException($this->command . ' was not found');
         }
 
         $config = $this->getConfig();
@@ -40,15 +42,9 @@ class PostgreSQL extends SqlBase
         $output = $process->getOutput();
         $error = $process->getErrorOutput();
 
-        var_dump("===============");
-        var_dump("OUTPUT");
-        var_dump($output);
-        var_dump("===============");
-        var_dump("===============");
-        var_dump("===============");
-        var_dump("ERROR");
-        var_dump($error);
-        var_dump("===============");
+        if (strpos($error, 'server version mismatch') !== false) {
+            throw new VersionMismatchException();
+        }
 
         if (!empty($error)) {
             $this->io->warning($error);
