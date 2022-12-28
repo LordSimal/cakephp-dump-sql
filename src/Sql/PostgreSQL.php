@@ -40,6 +40,16 @@ class PostgreSQL extends SqlBase
         $output = $process->getOutput();
         $error = $process->getErrorOutput();
 
+        var_dump("===============");
+        var_dump("OUTPUT");
+        var_dump($output);
+        var_dump("===============");
+        var_dump("===============");
+        var_dump("===============");
+        var_dump("ERROR");
+        var_dump($error);
+        var_dump("===============");
+
         if (!empty($error)) {
             $this->io->warning($error);
         }
