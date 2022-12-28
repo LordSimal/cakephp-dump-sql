@@ -37,11 +37,16 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
 
-            -   name: Setup Service
+            -   name: Setup MySQL
                 if: matrix.db-type == 'mysql'
                 run: |
                     sudo service mysql start
                     mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
+
+            -   name: Setup Postgres
+                if: matrix.db-type == 'pgsql'
+                run: |
+                    psql -h 127.0.0.1 -u postgres -c 'GRANT ALL ON SCHEMA public to postgres;'
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
