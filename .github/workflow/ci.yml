@@ -1,0 +1,107 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - 'main'
+    pull_request:
+        branches:
+            - '*'
+
+permissions:
+    contents: read # to fetch code (actions/checkout)
+
+jobs:
+    testsuite-linux:
+        runs-on: ubuntu-22.04
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: [ '7.4', '8.0', '8.1' ]
+                db-type: [ sqlite, mysql, pgsql ]
+                dependencies: [ 'highest' ]
+                include:
+                    -   php-version: '7.4'
+                        dependencies: 'lowest'
+                    -   php-version: '8.1'
+                        dependencies: 'highest'
+
+        services:
+            postgres:
+                image: postgres
+                ports:
+                    - 5432:5432
+                env:
+                    POSTGRES_PASSWORD: postgres
+
+        steps:
+            -   uses: actions/checkout@v3
+
+            -   name: Setup Service
+                if: matrix.db-type == 'mysql'
+                run: |
+                    sudo service mysql start
+                    mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-version }}
+                    extensions: mbstring, intl, pdo_${{ matrix.db-type }}
+                    ini-values: zend.assertions=1
+                    coverage: pcov
+
+            -   name: Composer install
+                uses: ramsey/composer-install@v2
+                with:
+                    dependency-versions: ${{ matrix.dependencies }}
+                    composer-options: ${{ matrix.composer-options }}
+
+            -   name: Run PHPUnit
+                run: |
+                    if [[ ${{ matrix.db-type }} == 'sqlite' ]]; then
+                        export db_dsn='sqlite:///testdb.sqlite3'
+                    fi
+                    if [[ ${{ matrix.db-type }} == 'mysql' ]]; then
+                        export db_dsn='mysql://root:root@127.0.0.1/cakephp'
+                    fi
+                    if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then
+                        export db_dsn='postgres://postgres:postgres@127.0.0.1/postgres'
+                    fi
+                    if [[ ${{ matrix.php-version }} == '8.1' && ${{ matrix.db-type }} == 'mysql' ]]; then
+                        vendor/bin/phpunit --coverage-clover=coverage.xml
+                    else
+                        vendor/bin/phpunit
+                    fi
+
+            -   name: Code Coverage Report
+                if: success() && matrix.php-version == '8.1' && matrix.db-type == 'mysql'
+                uses: codecov/codecov-action@v3
+
+    cs-stan:
+        name: Coding Standard & Static Analysis
+        runs-on: ubuntu-22.04
+
+        steps:
+            -   uses: actions/checkout@v3
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.1'
+                    extensions: mbstring, intl
+                    coverage: none
+                    tools: cs2pr
+
+            -   name: Composer Install
+                run: composer stan-setup
+
+            -   name: Run phpcs
+                run: vendor/bin/phpcs --report=checkstyle src/ tests/ | cs2pr
+
+            -   name: Run psalm
+                run: vendor/bin/psalm.phar --output-format=github
+
+            -   name: Run phpstan
+                if: always()
+                run: vendor/bin/phpstan.phar analyse --error-format=github

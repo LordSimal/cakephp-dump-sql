@@ -7,3 +7,5 @@
 /vendor/
 /.idea/
 /setup
+/tmp
+*sqlite*
