@@ -53,6 +53,7 @@ abstract class SqlBase
 
     /**
      * @param bool $dataOnly True if only data should be exported
+     * @return void
      */
     public function setDataOnly(bool $dataOnly): void
     {
@@ -69,6 +70,7 @@ abstract class SqlBase
 
     /**
      * @param \Cake\Console\ConsoleIo $io The IO instance from the command
+     * @return void
      */
     public function setIo(ConsoleIo $io): void
     {

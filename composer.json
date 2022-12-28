@@ -24,9 +24,9 @@
         }
     },
     "scripts": {
-        "test": "phpunit --stderr",
-        "cs-check": "phpcs -n -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
-        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "phpunit",
+        "cs-check": "phpcs --colors -p ./src ./tests",
+        "cs-fix": "phpcbf --colors -p ./src ./tests",
         "phpstan": "phpstan.phar analyse",
         "psalm": "psalm.phar --show-info=false",
         "stan": [
