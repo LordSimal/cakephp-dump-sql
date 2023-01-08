@@ -9,7 +9,7 @@ use Cake\Database\Driver\Mysql;
 use Cake\Database\Driver\Postgres;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use CakeDumpSql\Error\UnknownDriverException;
 use TestApp\Driver\MyDriver;
@@ -18,20 +18,14 @@ class DumpSqlCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->useCommandRunner();
-    }
-
     public function testCommand(): void
     {
         $postsTable = $this->fetchTable('Posts');
         $entity = $postsTable->newEmptyEntity();
         $entity = $postsTable->patchEntity($entity, [
             'title' => 'Testtitle',
-            'created' => new FrozenTime(),
-            'modified' => new FrozenTime(),
+            'created' => new DateTime(),
+            'modified' => new DateTime(),
         ]);
         $postsTable->save($entity);
 
@@ -56,8 +50,8 @@ class DumpSqlCommandTest extends TestCase
         $entity = $postsTable->newEmptyEntity();
         $entity = $postsTable->patchEntity($entity, [
             'title' => 'Testtitle',
-            'created' => new FrozenTime(),
-            'modified' => new FrozenTime(),
+            'created' => new DateTime(),
+            'modified' => new DateTime(),
         ]);
         $postsTable->save($entity);
 
@@ -81,8 +75,8 @@ class DumpSqlCommandTest extends TestCase
         $entity = $postsTable->newEmptyEntity();
         $entity = $postsTable->patchEntity($entity, [
             'title' => 'Testtitle',
-            'created' => new FrozenTime(),
-            'modified' => new FrozenTime(),
+            'created' => new DateTime(),
+            'modified' => new DateTime(),
         ]);
         $postsTable->save($entity);
 

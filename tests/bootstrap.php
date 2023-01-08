@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 use Cake\Cache\Cache;
 use Cake\Chronos\Chronos;
-use Cake\Chronos\Date;
-use Cake\Chronos\MutableDate;
-use Cake\Chronos\MutableDateTime;
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
+use Cake\TestSuite\Fixture\SchemaLoader;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -90,14 +88,11 @@ Configure::write('Session', [
 ]);
 
 Chronos::setTestNow(Chronos::now());
-MutableDateTime::setTestNow(MutableDateTime::now());
-Date::setTestNow(Date::now());
-MutableDate::setTestNow(MutableDate::now());
 
 ini_set('intl.default_locale', 'en_US');
 ini_set('session.gc_divisor', '1');
 
 if (env('FIXTURE_SCHEMA_METADATA')) {
-    $loader = new \Cake\TestSuite\Fixture\SchemaLoader();
+    $loader = new SchemaLoader();
     $loader->loadInternalFile(env('FIXTURE_SCHEMA_METADATA'));
 }

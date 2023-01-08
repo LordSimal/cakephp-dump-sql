@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Error;
 
-class BinaryNotFoundException extends \Exception
+use Exception;
+
+class BinaryNotFoundException extends Exception
 {
 }

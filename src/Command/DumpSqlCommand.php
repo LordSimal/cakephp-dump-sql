@@ -13,6 +13,9 @@ use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\Exception\MissingDatasourceConfigException;
 use CakeDumpSql\Error\UnknownDriverException;
+use CakeDumpSql\Sql\MySQL as CakeDumpMySQL;
+use CakeDumpSql\Sql\PostgreSQL as CakeDumpPostgres;
+use CakeDumpSql\Sql\Sqlite as CakeDumpSqlite;
 
 /**
  * DumpSQL command.
@@ -66,13 +69,13 @@ class DumpSqlCommand extends Command
         $driver = $connection->getDriver();
         switch (get_class($driver)) {
             case Mysql::class:
-                $object = new \CakeDumpSql\Sql\MySQL($connection->config());
+                $object = new CakeDumpMySQL($connection->config());
                 break;
             case Sqlite::class:
-                $object = new \CakeDumpSql\Sql\Sqlite($connection->config());
+                $object = new CakeDumpSqlite($connection->config());
                 break;
             case Postgres::class:
-                $object = new \CakeDumpSql\Sql\PostgreSQL($connection->config());
+                $object = new CakeDumpPostgres($connection->config());
                 break;
             default:
                 $message = sprintf('Unknown driver "%s" given.', get_class($driver));

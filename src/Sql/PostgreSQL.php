@@ -73,7 +73,7 @@ class PostgreSQL extends SqlBase
 
         // Escape colon and backslash characters in entries.
         // @see http://www.postgresql.org/docs/9.1/static/libpq-pgpass.html
-        array_walk($passwordParts, function (string &$part) {
+        array_walk($passwordParts, function (string &$part): void {
             // The order of the replacements is important so that backslashes are
             // not replaced twice.
             $part = str_replace(['\\', ':'], ['\\\\', '\:'], $part);
