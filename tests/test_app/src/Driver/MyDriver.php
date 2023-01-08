@@ -4,17 +4,14 @@ declare(strict_types=1);
 namespace TestApp\Driver;
 
 use Cake\Database\Driver;
-use Cake\Database\Driver\SqlDialectTrait;
+use Cake\Database\DriverFeatureEnum;
 use Cake\Database\Schema\MysqlSchemaDialect;
 use Cake\Database\Schema\SchemaDialect;
 
 class MyDriver extends Driver
 {
-    use SqlDialectTrait;
-
-    public function connect(): bool
+    public function connect(): void
     {
-        return true;
     }
 
     public function enabled(): bool
@@ -38,6 +35,11 @@ class MyDriver extends Driver
     }
 
     public function supportsDynamicConstraints(): bool
+    {
+        return true;
+    }
+
+    public function supports(DriverFeatureEnum $feature): bool
     {
         return true;
     }

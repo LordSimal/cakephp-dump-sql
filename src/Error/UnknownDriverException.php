@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Error;
 
-class UnknownDriverException extends \Exception
+use Exception;
+
+class UnknownDriverException extends Exception
 {
 }
