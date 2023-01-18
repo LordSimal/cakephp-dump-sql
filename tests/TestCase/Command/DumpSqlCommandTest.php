@@ -111,7 +111,7 @@ class DumpSqlCommandTest extends TestCase
     public function testUnknownConnectionName(): void
     {
         $this->exec('dump_sql unknown');
-        $this->assertErrorContains('The datasource configuration "unknown" was not found.');
+        $this->assertErrorContains('The datasource configuration `unknown` was not found.');
         $this->assertExitCode(1);
     }
 
