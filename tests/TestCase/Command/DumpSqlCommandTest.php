@@ -21,7 +21,6 @@ class DumpSqlCommandTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->useCommandRunner();
         // Sets the TestApp namespace to be used instead of App
         $this->setAppNamespace();
         $this->configApplication(
