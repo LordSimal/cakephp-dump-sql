@@ -69,13 +69,13 @@ jobs:
             -   name: Run PHPUnit
                 run: |
                     if [[ ${{ matrix.db-type }} == 'sqlite' ]]; then
-                        export db_dsn='sqlite:///testdb.sqlite3'
+                        export DB_URL=sqlite:///testdb.sqlite3
                     fi
                     if [[ ${{ matrix.db-type }} == 'mysql' ]]; then
-                        export db_dsn='mysql://root:root@127.0.0.1/cakephp'
+                        export DB_URL=mysql://root:root@127.0.0.1/cakephp
                     fi
                     if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then
-                        export db_dsn='postgres://postgres:postgres@127.0.0.1/postgres'
+                        export DB_URL=postgres://postgres:postgres@127.0.0.1/postgres
                     fi
                     if [[ ${{ matrix.php-version }} == '8.2' ]]; then
                         vendor/bin/phpunit --coverage-clover=coverage.xml

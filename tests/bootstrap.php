@@ -16,4 +16,5 @@ unset($findRoot);
 chdir($root);
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
+// See setUp() method inside tests
 define('PLUGIN_TESTS', $root . DS . 'tests' . DS);
