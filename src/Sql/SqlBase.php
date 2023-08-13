@@ -13,11 +13,6 @@ abstract class SqlBase
     protected string $command;
 
     /**
-     * @var array The config array from the connection object
-     */
-    protected array $config;
-
-    /**
      * @var bool Indicated if only data should be exported or not
      */
     protected bool $dataOnly = false;
@@ -30,17 +25,8 @@ abstract class SqlBase
     /**
      * @param array $config The config array from the connection object
      */
-    public function __construct(array $config)
+    public function __construct(public readonly array $config)
     {
-        $this->config = $config;
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfig(): array
-    {
-        return $this->config;
     }
 
     /**
@@ -77,7 +63,7 @@ abstract class SqlBase
      */
     protected function checkBinary(string $command): bool
     {
-        $windows = strpos(PHP_OS, 'WIN') === 0;
+        $windows = str_starts_with(PHP_OS, 'WIN');
         $test = $windows ? 'where' : 'command -v';
 
         return is_executable(trim(shell_exec("$test $command")));

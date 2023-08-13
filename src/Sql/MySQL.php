@@ -20,16 +20,14 @@ class MySQL extends SqlBase
             throw new BinaryNotFoundException($this->command . ' was not found');
         }
 
-        $config = $this->getConfig();
-
         $command = [
             $this->command,
-            '--user="' . ($config['username'] ?? '') . '"',
-            '--password="' . ($config['password'] ?? '') . '"',
-            '--default-character-set=' . ($config['encoding'] ?? 'utf8mb4'),
-            '--host=' . ($config['host'] ?? 'localhost'),
+            '--user="' . ($this->config['username'] ?? '') . '"',
+            '--password="' . ($this->config['password'] ?? '') . '"',
+            '--default-character-set=' . ($this->config['encoding'] ?? 'utf8mb4'),
+            '--host=' . ($this->config['host'] ?? 'localhost'),
             '--databases',
-            $config['database'],
+            $this->config['database'],
             '--no-create-db',
         ];
         if ($this->isDataOnly()) {

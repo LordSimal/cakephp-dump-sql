@@ -54,11 +54,9 @@ class Sqlite extends SqlBase
      */
     private function getSchema(): string
     {
-        $config = $this->getConfig();
-
         $schemaCommand = [
             $this->command,
-            $config['database'],
+            $this->config['database'],
             '.schema',
         ];
 
@@ -79,11 +77,9 @@ class Sqlite extends SqlBase
      */
     private function getDump(): string
     {
-        $config = $this->getConfig();
-
         $schemaCommand = [
             $this->command,
-            $config['database'],
+            $this->config['database'],
             '.dump',
         ];
 

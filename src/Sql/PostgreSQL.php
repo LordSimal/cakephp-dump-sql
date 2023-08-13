@@ -22,15 +22,14 @@ class PostgreSQL extends SqlBase
             throw new BinaryNotFoundException($this->command . ' was not found');
         }
 
-        $config = $this->getConfig();
         $passFile = $this->writePassFile();
 
         $command = [
             'PGPASSFILE=' . $passFile,
             $this->command,
-            '--host=' . ($config['host'] ?? 'localhost'),
-            '--username=' . ($config['username'] ?? ''),
-            '--dbname="' . ($config['database'] ?? '') . '"',
+            '--host=' . ($this->config['host'] ?? 'localhost'),
+            '--username=' . ($this->config['username'] ?? ''),
+            '--dbname="' . ($this->config['database'] ?? '') . '"',
         ];
         if ($this->isDataOnly()) {
             $command[] = '--data-only';
@@ -42,7 +41,7 @@ class PostgreSQL extends SqlBase
         $output = $process->getOutput();
         $error = $process->getErrorOutput();
 
-        if (strpos($error, 'server version mismatch') !== false) {
+        if (str_contains($error, 'server version mismatch')) {
             throw new VersionMismatchException();
         }
 
@@ -60,15 +59,13 @@ class PostgreSQL extends SqlBase
      */
     private function writePassFile(): string
     {
-        $config = $this->getConfig();
-
         $passwordParts = [
-            empty($config['host']) ? 'localhost' : $config['host'],
-            empty($config['port']) ? '5432' : $config['port'],
+            empty($this->config['host']) ? 'localhost' : $this->config['host'],
+            empty($this->config['port']) ? '5432' : $this->config['port'],
             // Database
             '*',
-            $config['username'],
-            $config['password'],
+            $this->config['username'],
+            $this->config['password'],
         ];
 
         // Escape colon and backslash characters in entries.
