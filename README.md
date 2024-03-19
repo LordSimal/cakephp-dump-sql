@@ -1,5 +1,5 @@
 
-# CakePHP 4 Dump SQL plugin
+# CakePHP Dump SQL plugin
 
 [![Latest Stable Version](http://poser.pugx.org/lordsimal/cakephp-dump-sql/v)](https://packagist.org/packages/lordsimal/cakephp-dump-sql) [![Total Downloads](http://poser.pugx.org/lordsimal/cakephp-dump-sql/downloads)](https://packagist.org/packages/lordsimal/cakephp-dump-sql) [![Latest Unstable Version](http://poser.pugx.org/lordsimal/cakephp-dump-sql/v/unstable)](https://packagist.org/packages/lordsimal/cakephp-dump-sql) [![License](http://poser.pugx.org/lordsimal/cakephp-dump-sql/license)](https://packagist.org/packages/lordsimal/cakephp-dump-sql) [![PHP Version Require](http://poser.pugx.org/lordsimal/cakephp-dump-sql/require/php)](https://packagist.org/packages/lordsimal/cakephp-dump-sql) [![codecov](https://codecov.io/github/LordSimal/cakephp-dump-sql/branch/main/graph/badge.svg?token=S4JKN84SWY)](https://codecov.io/github/LordSimal/cakephp-dump-sql)
 
