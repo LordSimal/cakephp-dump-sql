@@ -10,6 +10,12 @@ Currently the following DBMS are integrated:
 - SQLite
 - PostgreSQL
 
+## Version table
+|     | PHP              | CakePHP |
+|-----|------------------|---------|
+| 1.x | `^7.4 \|\| ^8.0` | `^4.4`  |
+| 2.x | `^8.1`           | `^5.0`  |
+
 ## Installation
 
 The recommended way to install this plugin via [composer](https://getcomposer.org) is:
