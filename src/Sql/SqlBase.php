@@ -66,6 +66,6 @@ abstract class SqlBase
         $windows = str_starts_with(PHP_OS, 'WIN');
         $test = $windows ? 'where' : 'command -v';
 
-        return is_executable(trim(shell_exec("$test $command")));
+        return is_executable(trim(shell_exec("$test $command") ?: ''));
     }
 }

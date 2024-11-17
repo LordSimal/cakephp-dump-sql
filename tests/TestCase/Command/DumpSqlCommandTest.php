@@ -92,8 +92,12 @@ class DumpSqlCommandTest extends TestCase
         $postsTable->save($entity);
 
         $this->exec('dump_sql --gzip');
-        $result = $this->_out->messages();
+        $result = $this->_out?->messages() ?? [];
         $sql = gzdecode($result[0]);
+        if (!$sql) {
+            $this->fail('Failed to decode gzipped output');
+        }
+
         if ($this->isDBType(Sqlite::class)) {
             $this->assertStringContainsString('CREATE TABLE IF NOT EXISTS "posts"', $sql);
             $this->assertStringContainsString('INSERT INTO posts VALUES(', $sql);

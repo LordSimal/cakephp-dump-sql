@@ -89,6 +89,11 @@ class DumpSqlCommand extends Command
         if ($gzip) {
             if (function_exists('gzencode')) {
                 $result = gzencode($result, 9);
+                if (!$result) {
+                    $io->err('Failed to gzip the dump!');
+
+                    return self::CODE_ERROR;
+                }
             } else {
                 $io->err('Your PHP installation does not have zlib support to create a gzip file!');
 

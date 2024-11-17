@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@">
+<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
   <file src="src/Sql/SqlBase.php">
-    <ForbiddenCode occurrences="1">
-      <code>shell_exec("$test $command")</code>
+    <ForbiddenCode>
+      <code><![CDATA[shell_exec("$test $command")]]></code>
     </ForbiddenCode>
-    <PossiblyNullArgument occurrences="1">
-      <code>shell_exec("$test $command")</code>
-    </PossiblyNullArgument>
   </file>
 </files>
