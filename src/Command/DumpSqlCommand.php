@@ -89,7 +89,7 @@ class DumpSqlCommand extends Command
         if ($gzip) {
             if (function_exists('gzencode')) {
                 $result = gzencode($result, 9);
-                if (!$result) {
+                if ($result === false) {
                     $io->err('Failed to gzip the dump!');
 
                     return self::CODE_ERROR;
