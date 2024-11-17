@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property CakeDumpSql\\Error\\VersionMismatchException\:\:\$message has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/Error/VersionMismatchException.php
