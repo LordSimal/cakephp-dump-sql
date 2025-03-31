@@ -25,7 +25,7 @@ class DumpSqlCommandTest extends TestCase
         $this->setAppNamespace();
         $this->configApplication(
             'TestApp\Application',
-            [PLUGIN_TESTS . 'test_app' . DS . 'config']
+            [PLUGIN_TESTS . 'test_app' . DS . 'config'],
         );
     }
 
