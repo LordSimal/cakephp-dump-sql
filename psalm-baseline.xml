@@ -1,8 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.14.1@b9d355e0829c397b9b3b47d0c0ed042a8a70284d">
+<files psalm-version="6.12.0@cf420941d061a57050b6c468ef2c778faf40aee2">
+  <file src="src/CakeDumpSqlPlugin.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[CakeDumpSqlPlugin]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Command/DumpSqlCommand.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[DumpSqlCommand]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Error/BinaryNotFoundException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[BinaryNotFoundException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Error/UnknownDriverException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[UnknownDriverException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Error/VersionMismatchException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[VersionMismatchException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Sql/MySQL.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[MySQL]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Sql/PostgreSQL.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[PostgreSQL]]></code>
+    </ClassMustBeFinal>
+  </file>
   <file src="src/Sql/SqlBase.php">
     <ForbiddenCode>
       <code><![CDATA[shell_exec("$test $command")]]></code>
     </ForbiddenCode>
+  </file>
+  <file src="src/Sql/Sqlite.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Sqlite]]></code>
+    </ClassMustBeFinal>
   </file>
 </files>
