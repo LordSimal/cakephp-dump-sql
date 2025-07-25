@@ -51,7 +51,8 @@ For each DBMS you need to have its respective dump tool installed.
 - SQLite => `sqlite3`
 - PostgreSQL => `pg_dump`
 
-⚠️ For `pg_dump` it is especially important that you have a compatible version installed. So e.g. if you have a **PostgreSQL 14 server** you need a **pg_dump version 14** ⚠️
+> [!WARNING]
+> For `pg_dump` it is especially important that you have a compatible version installed. So e.g. if you have a **PostgreSQL 14 server** you need a **pg_dump version 14** ⚠️
 
 ## How to use
 
@@ -79,7 +80,8 @@ bin/cake dump_sql test > test_dump.sql
 
 ### GZIP compressed dump
 
-ℹ️ The following feature requires you have the **PHP zlib extension** installed and active ℹ️
+> [!NOTE]
+> The following feature requires you have the **PHP zlib extension** installed and active️
 
 ```
 bin/cake dump_sql --gzip > dump.sql.gz
