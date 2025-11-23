@@ -3,6 +3,13 @@
     "description": "A CakePHP 4 plugin to export SQL",
     "type": "cakephp-plugin",
     "license": "MIT",
+    "keywords": [
+        "cakephp",
+        "plugin",
+        "sql",
+        "export",
+        "dump"
+    ],
     "require": {
         "php": ">=8.1",
         "cakephp/cakephp": "^5.0",
