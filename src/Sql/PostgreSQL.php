@@ -28,6 +28,7 @@ class PostgreSQL extends SqlBase
             'PGPASSFILE=' . $passFile,
             $this->command,
             '--host=' . ($this->config['host'] ?? 'localhost'),
+            '--port=' . ($this->config['port'] ?? 5432),
             '--username=' . ($this->config['username'] ?? ''),
             '--dbname="' . ($this->config['database'] ?? '') . '"',
         ];

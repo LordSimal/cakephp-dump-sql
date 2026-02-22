@@ -20,9 +20,21 @@ jobs:
             fail-fast: false
             matrix:
                 php-version: [ '8.1', '8.2', '8.3', '8.4' ]
-                db-type: [ sqlite, mysql, pgsql ]
+                db-type: [ sqlite, mysql, mariadb, pgsql ]
 
         services:
+            mariadb:
+                image: mariadb:11
+                env:
+                    MARIADB_ROOT_PASSWORD: root
+                    MARIADB_DATABASE: cakephp
+                ports:
+                    - 3307:3306
+                options: >-
+                    --health-cmd "mariadb-admin ping -h localhost -proot"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
             postgres:
                 image: postgres:14
                 env:
@@ -44,6 +56,10 @@ jobs:
                     sudo service mysql start
                     mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
 
+            -   name: Install MariaDB dump tools
+                if: matrix.db-type == 'mariadb'
+                run: sudo apt-get install mariadb-client
+
             -   name: Setup Postgres
                 if: matrix.db-type == 'pgsql'
                 run: |
@@ -57,7 +73,7 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php-version }}
-                    extensions: mbstring, intl, pdo_${{ matrix.db-type }}
+                    extensions: mbstring, intl, ${{ matrix.db-type == 'sqlite' && 'pdo_sqlite' || matrix.db-type == 'pgsql' && 'pdo_pgsql' || 'pdo_mysql' }}
                     ini-values: zend.assertions=1
                     coverage: pcov
 
@@ -74,6 +90,9 @@ jobs:
                     fi
                     if [[ ${{ matrix.db-type }} == 'mysql' ]]; then
                         export DB_URL=mysql://root:root@127.0.0.1/cakephp
+                    fi
+                    if [[ ${{ matrix.db-type }} == 'mariadb' ]]; then
+                        export DB_URL=mysql://root:root@127.0.0.1:3307/cakephp
                     fi
                     if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then
                         export DB_URL=postgres://postgres:postgres@127.0.0.1/postgres
@@ -107,7 +126,7 @@ jobs:
                 uses: ramsey/composer-install@v3
 
             -   name: Install PHP tools with phive.
-                run: "phive install --trust-gpg-keys 'CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5'"
+                run: "phive install --trust-gpg-keys '51C67305FFC2E5C0,12CE0F1D262429A5,99BF4D9A33D65E1E'"
 
             -   name: Run phpcs
                 if: always()
@@ -120,4 +139,3 @@ jobs:
             -   name: Run phpstan
                 if: always()
                 run: tools/phpstan analyse --error-format=github
-

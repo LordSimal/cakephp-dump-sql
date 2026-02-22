@@ -47,7 +47,7 @@ class DumpSqlCommandTest extends TestCase
             $this->assertOutputContains('INSERT INTO posts VALUES(');
         } elseif ($this->isDBType(Mysql::class)) {
             $this->assertOutputContains('CREATE TABLE `posts` (');
-            $this->assertOutputContains('INSERT INTO `posts` VALUES (');
+            $this->assertOutputContains('INSERT INTO `posts` VALUES');
         } elseif ($this->isDBType(Postgres::class)) {
             $this->assertOutputContains('CREATE TABLE public.posts');
             $this->assertOutputContains('COPY public.posts (id, title, created, modified) FROM stdin;');
@@ -72,7 +72,7 @@ class DumpSqlCommandTest extends TestCase
             $this->assertOutputContains('INSERT INTO posts VALUES(');
         } elseif ($this->isDBType(Mysql::class)) {
             $this->assertOutputNotContains('CREATE TABLE `posts` (');
-            $this->assertOutputContains('INSERT INTO `posts` VALUES (');
+            $this->assertOutputContains('INSERT INTO `posts` VALUES');
         } elseif ($this->isDBType(Postgres::class)) {
             $this->assertOutputNotContains('CREATE TABLE public.posts');
             $this->assertOutputContains('COPY public.posts (id, title, created, modified) FROM stdin;');
@@ -103,7 +103,7 @@ class DumpSqlCommandTest extends TestCase
             $this->assertStringContainsString('INSERT INTO posts VALUES(', $sql);
         } elseif ($this->isDBType(Mysql::class)) {
             $this->assertStringContainsString('CREATE TABLE `posts` (', $sql);
-            $this->assertStringContainsString('INSERT INTO `posts` VALUES (', $sql);
+            $this->assertStringContainsString('INSERT INTO `posts` VALUES', $sql);
         } elseif ($this->isDBType(Postgres::class)) {
             $this->assertStringContainsString('CREATE TABLE public.posts', $sql);
             $this->assertStringContainsString('COPY public.posts (id, title, created, modified) FROM stdin;', $sql);
