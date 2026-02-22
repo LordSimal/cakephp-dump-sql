@@ -47,7 +47,8 @@ public function bootstrap(): void
 
 For each DBMS you need to have its respective dump tool installed.
 
-- MySQL/MariaDB => `mysqldump`
+- MySQL => `mysqldump`
+- MariaDB => `mariadb-dump`
 - SQLite => `sqlite3`
 - PostgreSQL => `pg_dump`
 

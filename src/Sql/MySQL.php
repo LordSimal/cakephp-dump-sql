@@ -3,12 +3,26 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Sql;
 
+use Cake\Database\Driver\Mysql as MysqlDriver;
 use CakeDumpSql\Error\BinaryNotFoundException;
 use Symfony\Component\Process\Process;
 
 class MySQL extends SqlBase
 {
     protected string $command = 'mysqldump';
+
+    /**
+     * @param array<string, mixed> $config The config array from the connection object
+     * @param \Cake\Database\Driver\Mysql $driver The current mysql driver instance
+     */
+    public function __construct(array $config, protected MysqlDriver $driver)
+    {
+        parent::__construct($config);
+
+        if ($driver->isMariadb()) {
+            $this->command = 'mariadb-dump';
+        }
+    }
 
     /**
      * @return string
@@ -26,10 +40,17 @@ class MySQL extends SqlBase
             '--password="' . ($this->config['password'] ?? '') . '"',
             '--default-character-set=' . ($this->config['encoding'] ?? 'utf8mb4'),
             '--host=' . ($this->config['host'] ?? 'localhost'),
+            '--port=' . ($this->config['port'] ?? 3306),
             '--databases',
             $this->config['database'],
-            '--no-create-db',
         ];
+
+        if ($this->driver->isMariadb()) {
+            $command[] = '--skip-create-options';
+        } else {
+            $command[] = '--no-create-db';
+        }
+
         if ($this->isDataOnly()) {
             $command[] = '--no-create-info';
         }

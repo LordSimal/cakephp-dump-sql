@@ -67,19 +67,15 @@ class DumpSqlCommand extends Command
         }
 
         $driver = $connection->getDriver();
-        switch (get_class($driver)) {
-            case Mysql::class:
-                $object = new CakeDumpMySQL($connection->config());
-                break;
-            case Sqlite::class:
-                $object = new CakeDumpSqlite($connection->config());
-                break;
-            case Postgres::class:
-                $object = new CakeDumpPostgres($connection->config());
-                break;
-            default:
-                $message = sprintf('Unknown driver "%s" given.', get_class($driver));
-                throw new UnknownDriverException($message);
+        if ($driver instanceof Mysql) {
+            $object = new CakeDumpMySQL($connection->config(), $driver);
+        } elseif ($driver instanceof Sqlite) {
+            $object = new CakeDumpSqlite($connection->config());
+        } elseif ($driver instanceof Postgres) {
+            $object = new CakeDumpPostgres($connection->config());
+        } else {
+            $message = sprintf('Unknown driver "%s" given.', get_class($driver));
+            throw new UnknownDriverException($message);
         }
 
         $object->setIo($io);
