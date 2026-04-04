@@ -1,6 +1,6 @@
 {
     "name": "lordsimal/cakephp-dump-sql",
-    "description": "A CakePHP 4 plugin to export SQL",
+    "description": "A plugin to export SQL for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",
     "keywords": [
