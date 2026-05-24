@@ -20,6 +20,7 @@
   </projectFiles>
 
   <issueHandlers>
-    <PropertyNotSetInConstructor errorLevel="suppress"/>
+      <PropertyNotSetInConstructor errorLevel="suppress"/>
+      <MissingPureAnnotation errorLevel="suppress"/>
   </issueHandlers>
 </psalm>
