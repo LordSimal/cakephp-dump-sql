@@ -92,7 +92,7 @@ class DumpSqlCommandTest extends TestCase
         $postsTable->save($entity);
 
         $this->exec('dump_sql --gzip');
-        $result = $this->_out?->messages() ?? [];
+        $result = $this->out?->messages() ?? [];
         $sql = gzdecode($result[0]);
         if (!$sql) {
             $this->fail('Failed to decode gzipped output');

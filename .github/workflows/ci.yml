@@ -3,8 +3,7 @@ name: CI
 on:
     push:
         branches:
-            - '2.x'
-            - '2.next'
+            - '3.x'
     pull_request:
         branches:
             - '*'
@@ -19,7 +18,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: [ '8.1', '8.2', '8.3', '8.4', '8.5' ]
+                php-version: [ '8.4', '8.5' ]
                 db-type: [ sqlite, mysql, mariadb, pgsql ]
 
         services:
@@ -97,14 +96,14 @@ jobs:
                     if [[ ${{ matrix.db-type }} == 'pgsql' ]]; then
                         export DB_URL=postgres://postgres:postgres@127.0.0.1/postgres
                     fi
-                    if [[ ${{ matrix.php-version }} == '8.2' ]]; then
+                    if [[ ${{ matrix.php-version }} == '8.4' ]]; then
                         vendor/bin/phpunit --coverage-clover=coverage.xml
                     else
                         vendor/bin/phpunit
                     fi
 
             -   name: Code Coverage Report
-                if: success() && matrix.php-version == '8.2'
+                if: success() && matrix.php-version == '8.4'
                 uses: codecov/codecov-action@v7
                 with:
                     token: ${{ secrets.CODECOV_TOKEN }}
@@ -120,7 +119,7 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.3'
+                    php-version: '8.4'
                     extensions: mbstring, intl
                     coverage: none
                     tools: cs2pr

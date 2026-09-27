@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace CakeDumpSql\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Database\Driver\Mysql;
 use Cake\Database\Driver\Postgres;
@@ -47,21 +45,21 @@ class DumpSqlCommand extends Command
     /**
      * Implement this method with your command's logic.
      *
-     * @param \Cake\Console\Arguments $args The command arguments.
-     * @param \Cake\Console\ConsoleIo $io The console io
      * @return int The exit code
+     * @throws \CakeDumpSql\Error\BinaryNotFoundException
      * @throws \CakeDumpSql\Error\UnknownDriverException
+     * @throws \CakeDumpSql\Error\VersionMismatchException
      */
-    public function execute(Arguments $args, ConsoleIo $io): int
+    public function execute(): int
     {
-        $datasource = $args->getArgument('datasource') ?? 'default';
-        $gzip = $args->getOption('gzip') !== null;
-        $dataOnly = $args->getOption('data-only') !== null;
+        $datasource = $this->args->getArgument('datasource') ?? 'default';
+        $gzip = $this->args->getOption('gzip') !== null;
+        $dataOnly = $this->args->getOption('data-only') !== null;
 
         try {
             $connection = ConnectionManager::get($datasource);
         } catch (MissingDatasourceConfigException $e) {
-            $io->err($e->getMessage());
+            $this->io->err($e->getMessage());
 
             return self::CODE_ERROR;
         }
@@ -78,7 +76,7 @@ class DumpSqlCommand extends Command
             throw new UnknownDriverException($message);
         }
 
-        $object->setIo($io);
+        $object->setIo($this->io);
         $object->setDataOnly($dataOnly);
         $result = $object->dump();
 
@@ -86,18 +84,18 @@ class DumpSqlCommand extends Command
             if (function_exists('gzencode')) {
                 $result = gzencode($result, 9);
                 if ($result === false) {
-                    $io->err('Failed to gzip the dump!');
+                    $this->io->err('Failed to gzip the dump!');
 
                     return self::CODE_ERROR;
                 }
             } else {
-                $io->err('Your PHP installation does not have zlib support to create a gzip file!');
+                $this->io->err('Your PHP installation does not have zlib support to create a gzip file!');
 
                 return self::CODE_ERROR;
             }
         }
 
-        $io->out($result);
+        $this->io->out($result);
 
         return self::CODE_SUCCESS;
     }

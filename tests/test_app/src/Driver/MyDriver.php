@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace TestApp\Driver;
 
 use Cake\Database\Driver;
-use Cake\Database\DriverFeatureEnum;
+use Cake\Database\Enum\DriverFeature;
 use Cake\Database\Schema\MysqlSchemaDialect;
 use Cake\Database\Schema\SchemaDialect;
 
@@ -39,7 +39,7 @@ class MyDriver extends Driver
         return true;
     }
 
-    public function supports(DriverFeatureEnum $feature): bool
+    public function supports(DriverFeature $feature): bool
     {
         return true;
     }

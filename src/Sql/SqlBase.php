@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CakeDumpSql\Sql;
 
-use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleIoInterface;
 
 abstract class SqlBase
 {
@@ -18,9 +18,9 @@ abstract class SqlBase
     protected bool $dataOnly = false;
 
     /**
-     * @var \Cake\Console\ConsoleIo The IO instance from the command
+     * @var \Cake\Console\ConsoleIoInterface The IO instance from the command
      */
-    protected ConsoleIo $io;
+    protected ConsoleIoInterface $io;
 
     /**
      * @param array $config The config array from the connection object
@@ -47,10 +47,10 @@ abstract class SqlBase
     }
 
     /**
-     * @param \Cake\Console\ConsoleIo $io The IO instance from the command
+     * @param \Cake\Console\ConsoleIoInterface $io The IO instance from the command
      * @return void
      */
-    public function setIo(ConsoleIo $io): void
+    public function setIo(ConsoleIoInterface $io): void
     {
         $this->io = $io;
     }
