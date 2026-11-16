@@ -19,7 +19,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php-version: [ '8.1', '8.2', '8.3', '8.4', '8.5' ]
+                php-version: [ '8.1', '8.2', '8.3', '8.4', '8.5', '8.6' ]
                 db-type: [ sqlite, mysql, mariadb, pgsql ]
 
         services:
@@ -75,7 +75,7 @@ jobs:
                     php-version: ${{ matrix.php-version }}
                     extensions: mbstring, intl, ${{ matrix.db-type == 'sqlite' && 'pdo_sqlite' || matrix.db-type == 'pgsql' && 'pdo_pgsql' || 'pdo_mysql' }}
                     ini-values: zend.assertions=1
-                    coverage: pcov
+                    coverage: ${{ matrix.php-version == '8.2' && 'pcov' || 'none' }}
 
             -   name: Composer install
                 uses: ramsey/composer-install@v4
